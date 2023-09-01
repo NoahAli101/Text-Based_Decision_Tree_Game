@@ -1,0 +1,51 @@
+class TreeNode:
+    def __init__(self, data, left=None, right=None):
+        self.data = data
+        self.left = left
+        self.right = right
+
+
+class DecisionTreeGame:
+    def __init__(self):
+        # Define the decision tree structure
+        self.start = TreeNode("You are standing in a dark forest. Do you go left or right?")
+        self.left = TreeNode("You encounter a friendly squirrel. Do you pet it or ignore it?")
+        self.right = TreeNode("You find a mysterious cave. Do you enter it or continue walking?")
+        self.pet_squirrel = TreeNode("The squirrel leads you to a treasure chest. You win!")
+        self.ignore_squirrel = TreeNode("The squirrel ignores you. You continue your journey.")
+        self.enter_cave = TreeNode("You enter the cave and discover a dragon. Do you run or try to befriend it?")
+        self.run_away = TreeNode("You run away from the dragon, but you get lost in the forest.")
+        self.befriend_dragon = TreeNode("The dragon becomes your friend. You both explore the cave and find treasure. You win!")
+
+        # Build the decision tree
+        self.start.left = self.left
+        self.start.right = self.right
+        self.left.left = self.pet_squirrel
+        self.left.right = self.ignore_squirrel
+        self.right.left = self.enter_cave
+        self.right.right = None
+        self.enter_cave.left = self.run_away
+        self.enter_cave.right = self.befriend_dragon
+
+    def play(self):
+        current_node = self.start
+
+        while current_node:
+            print(current_node.data)
+            choice = input("Enter 'L' for left or 'R' for right (or 'Q' to quit): ").strip().upper()
+
+            if choice == 'Q':
+                print("Game over.")
+                break
+            elif choice == 'L' and current_node.left:
+                current_node = current_node.left
+            elif choice == 'R' and current_node.right:
+                current_node = current_node.right
+            else:
+                print("Invalid choice. Try again.")
+
+        print("Thanks for playing!")
+
+if __name__ == "__main__":
+    game = DecisionTreeGame()
+    game.play()
